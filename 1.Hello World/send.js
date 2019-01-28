@@ -5,8 +5,9 @@ amqp.connect('amqp://localhost', (err, conn) => {
     if (err) throw err;
     conn.createChannel((err, channel) => {
         if (err) throw err;
+        /**Set queue name */
         let q = 'hello';
-
+        /**Queue not persistent */
         channel.assertQueue(q, { durable: false });
         channel.sendToQueue(q, new Buffer.from('Hello World'));
         console.log(`[x] Sent 'Hello World!'`);
