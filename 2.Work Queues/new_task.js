@@ -8,10 +8,11 @@ amqp.connect('amqp://localhost', (err, conn) => {
         /**Instantiate queue */
         const q = 'task_queue';
         let msg = process.argv.slice(2).join(' ') || "Hello World!";
-        /**Make queue persistant */
         ch.assertQueue(q, { durable: true });
-        ch.sendToQueue(q, new Buffer.from(msg), { persistent: true });
-        console.log(" [x] Sent '%s'", msg);
+        for (let i = 0; i < 100; i++) {
+            ch.sendToQueue(q, new Buffer.from(msg + " " + i), { persistent: true });
+            console.log(` [x] Sent ${msg} ${i}`);
+        }
     });
     setTimeout(() => {
         conn.close();
